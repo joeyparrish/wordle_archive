@@ -3,7 +3,9 @@
 ### Introduction
 
 - This site is built with React and TailwindCSS
-- Check out the existing issues for ways to contribute
+- Based on the incredible work of Devang Thakkar
+  - https://www.devangthakkar.com/wordle_archive/
+  - https://github.com/DevangThakkar/wordle_archive
 
 ### Have a new feature request or see a bug?
 

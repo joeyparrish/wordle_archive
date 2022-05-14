@@ -1,8 +1,8 @@
 {
-  "name": "wordle-archive",
-  "version": "0.1.0",
+  "name": "wordles-with-friends",
+  "version": "1.0.0",
   "private": true,
-  "homepage": "https://www.devangthakkar.com/wordle_archive",
+  "homepage": "https://joeyparrish.github.io/wordles-with-friends/",
   "dependencies": {
     "@headlessui/react": "^1.4.2",
     "@testing-library/jest-dom": "^5.16.1",

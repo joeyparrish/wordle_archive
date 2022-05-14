@@ -1,12 +1,17 @@
-# Wordle Archive
+# Wordles with Friends
 
-🔗 https://www.devangthakkar.com/wordle_archive/
+🔗 https://joeyparrish.github.io/wordles-with-friends/
 
-An archive for [Wordle](https://www.powerlanguage.co.uk/wordle/) by [Josh Wardle](https://twitter.com/powerlanguish) and built on top of [Word Master](https://octokatherine.github.io/word-master/) created by [Katherine Peterson](https://twitter.com/katherinecodes), Wordle Archive is ... simply a remembrance of wordles past. I created this because I wanted to go back to Wordles that I had missed.
+A version of [Wordle](https://www.nytimes.com/games/wordle/index.html) you can
+play with friends.  Enter a word, then send the link to your friends to
+challenge them.
 
-## How did I do it?
+Built on top of the now-defunct
+[Wordle Archive](https://www.devangthakkar.com/wordle_archive/) by
+[Devang Thakkar](https://devangthakkar.com/),
+which was based on [Word Master](https://octokatherine.github.io/word-master/)
+by [Katherine Peterson](https://twitter.com/katherinecodes).
 
-This project would not have been possible without [Selenium](https://github.com/SeleniumHQ/selenium). I figured out that if I changed my computer time to a previous date, I could trick Wordle into allowing me to access the Wordle for the day. I used Selenium to go back in time and obtain answers, but I have since been told the answers were already in the correct order in the original source code. I have the answers in plain text in the source code as well because I don't care, especially since there are many ways to cheat already.
 
 ## Rules
 
@@ -19,8 +24,10 @@ After submitting a guess, the letters will turn gray, green, or yellow.
 - Yellow: The letter is correct, but in the wrong position.
 - Gray: The letter is incorrect.
 
+
 ## Contributing
 
-Feel free to open an issue for any bugs or feature requests.
+Feel free to [open an issue](https://github.com/joeyparrish/wordles-with-friends/issues)
+for any bugs or feature requests.
 
 To contribute to the code, see [CONTRIBUTING.md](CONTRIBUTING.md)
