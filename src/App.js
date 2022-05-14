@@ -4,6 +4,7 @@ import { Keyboard } from './components/Keyboard'
 import words from './data/words'
 
 import { useLocalStorage } from './hooks/useLocalStorage'
+import { ReactComponent as Create } from './data/Create.svg'
 import { ReactComponent as Info } from './data/Info.svg'
 import { ReactComponent as Settings } from './data/Settings.svg'
 import { ReactComponent as Share } from './data/Share.svg'
@@ -188,6 +189,7 @@ function App() {
   const [firstTime, setFirstTime] = useLocalStorage('first-time', true)
   const [infoModalIsOpen, setInfoModalIsOpen] = useState(firstTime)
   const [settingsModalIsOpen, setSettingsModalIsOpen] = useState(false)
+  const [createModalIsOpen, setCreateModalIsOpen] = useState(false)
   const [isSavedSolution, setIsSavedSolution] = useState(getIsSavedSolution())
 
   const [gameStateList, setGameStateList] = useLocalStorage(
@@ -557,17 +559,20 @@ function App() {
 
   const html = document.querySelector('html');
   if (darkMode) {
-    html.setAttribute( 'class', 'dark-bg' );
+    html.setAttribute('class', 'dark-bg');
   } else {
-    html.setAttribute( 'class', 'bg' );
+    html.setAttribute('class', 'bg');
   }
 
   return (
       <div className={darkMode ? 'dark h-fill' : 'h-fill'}>
         <div className={`flex flex-col justify-between h-fill bg-background dark:bg-background-dark`}>
           <header className="flex items-center py-2 px-3 text-primary dark:text-primary-dark">
-            <button type="button" onClick={() => setSettingsModalIsOpen(true)}>
+            <button className="mr-2" type="button" onClick={() => setSettingsModalIsOpen(true)}>
               <Settings />
+            </button>
+            <button type="button" onClick={() => setCreateModalIsOpen(true)}>
+              <Create />
             </button>
             <h1 className={"flex-1 text-center text-l xxs:text-lg sm:text-3xl tracking-wide font-bold font-og"}>
               WORDLES WITH FRIENDS {header_symbol}
@@ -579,59 +584,6 @@ function App() {
               <Info />
             </button>
           </header>
-          <div className="flex flex-force-center items-center py-3">
-            <div className="flex items-center px-2">
-              <button
-                type="button"
-                className="rounded px-2 py-2 mt-2 w-24 text-sm nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark"
-                onClick={playPrevious}>Previous
-              </button>
-            </div>
-            <div className="flex items-center px-2">
-              <button
-                type="button"
-                className="rounded px-2 py-2 mt-2 w-24 text-sm nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark"
-                onClick={playRandom}>Random
-              </button>
-            </div>
-            <div className="flex items-center px-2">
-              <button
-                type="button"
-                className="rounded px-2 py-2 mt-2 w-24 text-sm nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark"
-                onClick={playNext}>Next
-              </button>
-            </div>
-          </div>
-           <div className="flex flex-force-center items-center py-3">
-            <div className="flex items-center px-2">
-              <button
-                type="button"
-                className="rounded px-2 py-2 w-24 text-sm nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark"
-                onClick={playFirst}>First
-              </button>
-            </div>
-            <div className="flex items-center px-2">
-              <Menu as="div" className="relative inline-block text-left">
-                <div>
-                  <Menu.Button className="blurthis rounded px-2 py-2 w-24 text-sm nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark">
-                    Choose
-                  </Menu.Button>
-                </div>
-                  <Menu.Items className="origin-top-right absolute right-0 mt-2 w-42 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-scroll h-56">
-                    <div className="py-1">
-                      {elements}
-                    </div>
-                  </Menu.Items>
-              </Menu>
-            </div>
-            <div className="flex items-center px-2">
-              <button
-                type="button"
-                className="rounded px-2 py-2 w-24 text-sm nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark"
-                onClick={playLast}>Last
-              </button>
-            </div>
-          </div>
           <div className="flex items-center flex-col py-4">
             <div className="grid grid-cols-5 grid-flow-row gap-4">
               {board.map((row, rowNumber) =>
