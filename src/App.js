@@ -562,8 +562,7 @@ function App() {
     html.setAttribute( 'class', 'bg' );
   }
 
-  if (window.innerWidth < 600) {
-    return (
+  return (
       <div className={darkMode ? 'dark h-fill' : 'h-fill'}>
         <div className={`flex flex-col justify-between h-fill bg-background dark:bg-background-dark`}>
           <header className="flex items-center py-2 px-3 text-primary dark:text-primary-dark">
@@ -571,7 +570,7 @@ function App() {
               <Settings />
             </button>
             <h1 className={"flex-1 text-center text-l xxs:text-lg sm:text-3xl tracking-wide font-bold font-og"}>
-              WORDLE ARCHIVE {day} {header_symbol}
+              WORDLES WITH FRIENDS {header_symbol}
             </h1>
             <button className="mr-2" type="button" onClick={() => setIsOpen(true)}>
               <Share />
@@ -698,144 +697,6 @@ function App() {
         </div>
       </div>
     )
-  }
-  else {
-    return (
-      <div className={darkMode ? 'dark h-fill' : 'h-fill'}>
-        <div className={`flex flex-col justify-between h-fill bg-background dark:bg-background-dark`}>
-          <header className="flex items-center py-2 px-3 text-primary dark:text-primary-dark">
-            <button type="button" onClick={() => setSettingsModalIsOpen(true)}>
-              <Settings />
-            </button>
-            <h1 className={"flex-1 text-center text-xl xxs:text-2xl -mr-6 sm:text-4xl tracking-wide font-bold font-og"}>
-              WORDLE ARCHIVE {day}  {header_symbol}
-            </h1>
-            <button className="mr-6" type="button" onClick={() => setIsOpen(true)}>
-              <Share />
-            </button>
-            <button type="button" onClick={() => setInfoModalIsOpen(true)}>
-              <Info />
-            </button>
-          </header>
-          <div className="flex flex-force-center items-center py-3">
-            <div className="flex items-center px-3">
-              <button
-                type="button"
-                className="rounded px-3 py-2 mt-4 w-32 text-lg nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark"
-                onClick={playFirst}>First
-              </button>
-            </div>
-            <div className="flex items-center px-3">
-              <button
-                type="button"
-                className="rounded px-3 py-2 mt-4 w-32 text-lg nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark"
-                onClick={playPrevious}>Previous
-              </button>
-            </div>
-            <div className="flex items-center px-3">
-              <Menu as="div" className="relative inline-block text-left">
-                <div>
-                  <Menu.Button className="blurthis rounded px-3 py-2 mt-4 w-32 text-lg nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark">
-                    Choose
-                  </Menu.Button>
-                </div>
-                  <Menu.Items className="origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-scroll h-56">
-                    <div className="py-1">
-                      <Menu.Item key={i}>
-                        {({ active }) =>
-                          (
-                            <button onClick={() => playRandom()} className={classNames(active ? 'font-bold text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm w-full text-left')}>
-                              Random
-                            </button>
-                          )
-                        }
-                      </Menu.Item>
-                      {elements}
-                    </div>
-                  </Menu.Items>
-              </Menu>
-            </div>
-            <div className="flex items-center px-3">
-              <button
-                type="button"
-                className="rounded px-3 py-2 mt-4 w-32 text-lg nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark"
-                onClick={playNext}>Next
-              </button>
-            </div>
-            <div className="flex items-center px-3">
-              <button
-                type="button"
-                className="rounded px-3 py-2 mt-4 w-32 text-lg nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark"
-                onClick={playLast}>Last
-              </button>
-            </div>
-          </div>
-          <div className="flex items-center flex-col py-4">
-            <div className="grid grid-cols-5 grid-flow-row gap-4">
-              {board.map((row, rowNumber) =>
-                row.map((letter, colNumber) => (
-                  <span
-                    key={colNumber}
-                    className={`${getCellStyles(
-                      rowNumber,
-                      colNumber,
-                      letter
-                    )} inline-flex items-center font-bold justify-center text-3xl w-[14vw] h-[14vw] xs:w-14 xs:h-14 sm:w-20 sm:h-20 rounded`}
-                  >
-                    {letter}
-                  </span>
-                ))
-              )}
-            </div>
-          </div>
-          <InfoModal
-            isOpen={infoModalIsOpen}
-            handleClose={handleInfoClose}
-            darkMode={darkMode}
-            colorBlindMode={colorBlindMode}
-            styles={modalStyles}
-          />
-          <EndGameModal
-            isOpen={modalIsOpen}
-            handleClose={closeModal}
-            styles={modalStyles}
-            darkMode={darkMode}
-            gameState={gameState}
-            state={state}
-            currentStreak={currentStreak}
-            longestStreak={longestStreak}
-            answer={answer}
-            playAgain={() => {
-              closeModal()
-              streakUpdated.current = false
-            }}
-            day={day}
-            currentRow={currentRow}
-            cellStatuses={cellStatuses}
-          />
-          <SettingsModal
-            isOpen={settingsModalIsOpen}
-            handleClose={() => setSettingsModalIsOpen(false)}
-            styles={modalStyles}
-            darkMode={darkMode}
-            toggleDarkMode={toggleDarkMode}
-            colorBlindMode={colorBlindMode}
-            toggleColorBlindMode={toggleColorBlindMode}
-          />
-          <Keyboard
-            isSolved={gameState === state.won}
-            onClear={clearSolution}
-            letterStatuses={letterStatuses}
-            addLetter={addLetter}
-            onEnterPress={onEnterPress}
-            onDeletePress={onDeletePress}
-            gameDisabled={gameState !== state.playing}
-            colorBlindMode={colorBlindMode}
-          />
-        </div>
-      </div>
-    )
-  }
 }
 
 export default App
