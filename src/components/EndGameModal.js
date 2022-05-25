@@ -35,7 +35,7 @@ class ShareButton extends React.Component {
   getShareText() {
     const won = this.props.gameState === state.won;
     const row = won ? this.props.currentRow : 'X';
-    const header = `Wordle ${this.props.day} ${row}/6`;
+    const header = `Wordles with Friends ${this.props.gameId} ${row}/6`;
 
     const map = this.props.cellStatuses.map((row) => {
       if (row.every((item) => item !== status.unguessed)) {
@@ -134,7 +134,7 @@ export class EndGameModal extends React.Component {
               </>
             )}
             <ShareButton
-              day={this.props.day}
+              gameId={this.props.gameId}
               darkMode={this.props.darkMode}
               gameState={this.props.gameState}
               currentRow={this.props.currentRow}

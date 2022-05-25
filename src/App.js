@@ -11,36 +11,33 @@ import { InfoModal } from './components/InfoModal'
 import { SettingsModal } from './components/SettingsModal'
 import { EndGameModal } from './components/EndGameModal'
 import { Keyboard } from './components/Keyboard'
-
-// Set the day number of the puzzle to display and show it as the address bar query string
-function computeDay() {
-  // The default day (today).
-  const todaysDate = new Date();
-  const date1 = new Date('6/21/21');
-  const diffTime = Math.abs(todaysDate - date1);
-  const defaultDay = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-  const { search } = document.location;
-  let day = defaultDay;
-
-  if (search) {
-    if (!isNaN(search.slice(1))) {
-      day = parseInt(search.slice(1), 10);
-    }
-  }
-
-  if (day < 1 || day > defaultDay) {
-    day = defaultDay;
-  }
-  window.history.pushState({}, '', '?' + day);
-
-  return day;
-};
-
-const wordle_answers = ["rebut", "sissy", "humph", "awake", "blush", "focal", "evade", "naval", "serve", "heath", "dwarf", "model", "karma", "stink", "grade", "quiet", "bench", "abate", "feign", "major", "death", "fresh", "crust", "stool", "colon", "abase", "marry", "react", "batty", "pride", "floss", "helix", "croak", "staff", "paper", "unfed", "whelp", "trawl", "outdo", "adobe", "crazy", "sower", "repay", "digit", "crate", "cluck", "spike", "mimic", "pound", "maxim", "linen", "unmet", "flesh", "booby", "forth", "first", "stand", "belly", "ivory", "seedy", "print", "yearn", "drain", "bribe", "stout", "panel", "crass", "flume", "offal", "agree", "error", "swirl", "argue", "bleed", "delta", "flick", "totem", "wooer", "front", "shrub", "parry", "biome", "lapel", "start", "greet", "goner", "golem", "lusty", "loopy", "round", "audit", "lying", "gamma", "labor", "islet", "civic", "forge", "corny", "moult", "basic", "salad", "agate", "spicy", "spray", "essay", "fjord", "spend", "kebab", "guild", "aback", "motor", "alone", "hatch", "hyper", "thumb", "dowry", "ought", "belch", "dutch", "pilot", "tweed", "comet", "jaunt", "enema", "steed", "abyss", "growl", "fling", "dozen", "boozy", "erode", "world", "gouge", "click", "briar", "great", "altar", "pulpy", "blurt", "coast", "duchy", "groin", "fixer", "group", "rogue", "badly", "smart", "pithy", "gaudy", "chill", "heron", "vodka", "finer", "surer", "radio", "rouge", "perch", "retch", "wrote", "clock", "tilde", "store", "prove", "bring", "solve", "cheat", "grime", "exult", "usher", "epoch", "triad", "break", "rhino", "viral", "conic", "masse", "sonic", "vital", "trace", "using", "peach", "champ", "baton", "brake", "pluck", "craze", "gripe", "weary", "picky", "acute", "ferry", "aside", "tapir", "troll", "unify", "rebus", "boost", "truss", "siege", "tiger", "banal", "slump", "crank", "gorge", "query", "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy", "point", "robot", "prick", "wince", "crimp", "knoll", "sugar", "whack", "mount", "perky", "could", "wrung", "light", "those", "moist", "shard", "pleat", "aloft", "skill", "elder", "frame", "humor", "pause", "ulcer", "ultra", "robin", "cynic", "aroma", "caulk", "shake", "dodge", "swill", "tacit", "other", "thorn", "trove", "bloke", "vivid", "spill", "chant", "choke", "rupee", "nasty", "mourn", "ahead", "brine", "cloth", "hoard", "sweet", "month", "lapse", "watch", "today", "focus", "smelt", "tease", "cater", "movie", "saute", "allow", "renew", "their", "slosh", "purge", "chest", "depot", "epoxy", "nymph", "found", "shall", "stove", "lowly", "snout", "trope", "fewer", "shawl", "natal", "comma", "foray", "scare", "stair", "black", "squad", "royal", "chunk", "mince", "shame", "cheek", "ample", "flair", "foyer", "cargo", "oxide", "plant", "olive", "inert", "askew", "heist", "shown", "zesty", "trash", "larva", "forgo", "story", "hairy", "train", "homer", "badge", "midst", "canny", "fetus", "butch", "farce", "slung", "tipsy", "metal", "yield", "delve", "being", "scour", "glass", "gamer", "scrap", "money", "hinge", "album", "vouch", "asset", "tiara", "crept", "bayou", "atoll", "manor", "creak", "showy", "phase", "froth", "depth", "gloom", "flood", "trait", "girth", "piety", "goose", "float", "donor", "atone", "primo", "apron", "blown", "cacao", "loser", "input", "gloat", "awful", "brink", "smite", "beady", "rusty", "retro", "droll", "gawky", "hutch", "pinto", "egret", "lilac", "sever", "field", "fluff", "flack", "agape", "voice", "stead", "stalk", "berth", "madam", "night", "bland", "liver", "wedge", "augur", "roomy", "wacky", "flock", "angry", "trite", "aphid", "tryst", "midge", "power", "elope", "cinch", "motto", "stomp", "upset", "bluff", "cramp", "quart", "coyly", "youth", "rhyme", "buggy", "alien", "smear", "unfit", "patty", "cling", "glean", "label", "hunky", "khaki", "poker", "gruel", "twice", "twang", "shrug", "treat", "waste", "merit", "woven", "needy", "clown", "widow", "irony", "ruder", "gauze", "chief", "onset", "prize", "fungi", "charm", "gully", "inter", "whoop", "taunt", "leery", "class", "theme", "lofty", "tibia", "booze", "alpha", "thyme", "doubt", "parer", "chute", "stick", "trice", "alike", "recap", "saint", "glory", "grate", "admit", "brisk", "soggy", "usurp", "scald", "scorn", "leave", "twine", "sting", "bough", "marsh", "sloth", "dandy", "vigor", "howdy", "enjoy"]
+import { decrypt, codeToWord } from './cipher'
 
 function isValidWord(word) {
   return words[word.toLowerCase()];
+}
+
+function computeGameId() {
+  const { search } = document.location;
+
+  if (search) {
+    return search.slice(1);
+  }
+
+  return '';
+}
+
+function computeAnswer(gameId) {
+  if (!gameId) {
+    return '';
+  }
+
+  const answer = decrypt(codeToWord(gameId));
+  if (answer.length !== 5 || !isValidWord(answer)) {
+    return '';
+  }
+
+  return answer;
 }
 
 class Board extends React.Component {
@@ -143,11 +140,14 @@ export default class App extends React.Component {
       board.push(Array(5).fill(''));
     }
 
-    const day = computeDay();
+    const gameId = computeGameId();
+    const answer = computeAnswer(gameId);
+    const createModalOpen = answer === '';
+    const gameState = createModalOpen ? state.disabled : state.playing;
 
     this.state = {
-      day,
-      answer: wordle_answers[day].toUpperCase(),
+      gameId,
+      answer,
       board,
       submittedInvalidWord: false,
 
@@ -155,7 +155,7 @@ export default class App extends React.Component {
       darkMode: false,
       colorBlindMode: false,
       firstTime: true,  // tied to info modal state
-      gameState: state.playing,
+      gameState,
 
       // Unsafe initial state is fine, will be replaced by updateStateFromBoard.
       cellStatuses: Array(6).fill(Array(5).fill(status.unguessed)),
@@ -168,7 +168,7 @@ export default class App extends React.Component {
       // Modal states:
       settingsModalOpen: false,
       endGameModalOpen: false,
-      createModalOpen: false,
+      createModalOpen,
     };
 
     this.savedBooleanSettings = [
@@ -214,15 +214,18 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.loadSettings();
-    const newBoard = this.loadBoardState();
-    this.computeWinsAndLosses();
 
-    // This will be -1 for an empty board.
-    const {lastRow} = this.updateStateFromBoard(newBoard);
-    this.setState({
-      currentRow: lastRow + 1,
-      currentCol: 0,
-    });
+    if (this.state.answer) {
+      const newBoard = this.loadBoardState();
+      this.computeWinsAndLosses();
+
+      // This will be -1 for an empty board.
+      const {lastRow} = this.updateStateFromBoard(newBoard);
+      this.setState({
+        currentRow: lastRow + 1,
+        currentCol: 0,
+      });
+    }
   }
 
   updateStateFromBoard(board) {
@@ -292,13 +295,14 @@ export default class App extends React.Component {
   }
 
   computeWinsAndLosses() {
-    const savedStateList = JSON.parse(localStorage.getItem('gameStateList'));
+    const savedStates = JSON.parse(localStorage.getItem('gameStates'));
 
     let wins = 0;
     let losses = 0;
 
-    for (const savedState of (savedStateList || [])) {
-      switch (savedState && savedState.gameState) {
+    for (const gameId in (savedStates || {})) {
+      const savedState = savedStates[gameId];
+      switch (savedState.gameState) {
         case state.won:
           wins++;
           break;
@@ -317,8 +321,8 @@ export default class App extends React.Component {
   }
 
   loadBoardState() {
-    const savedStateList = JSON.parse(localStorage.getItem('gameStateList'));
-    const savedState = savedStateList && savedStateList[this.state.day];
+    const savedStates = JSON.parse(localStorage.getItem('gameStates'));
+    const savedState = savedStates && savedStates[this.state.gameId];
     if (savedState) {
       this.setState({
         board: savedState.board,
@@ -330,16 +334,16 @@ export default class App extends React.Component {
     return this.state.board;
   }
 
-  saveBoardState() {
-    let savedStateList = JSON.parse(localStorage.getItem('gameStateList'));
-    if (!savedStateList) {
-      savedStateList = [];
+  saveBoardState(gameState) {
+    let savedStates = JSON.parse(localStorage.getItem('gameStates'));
+    if (!savedStates) {
+      savedStates = {};
     }
-    savedStateList[this.state.day] = {
+    savedStates[this.state.gameId] = {
       board: this.state.board,
       gameState: this.state.gameState,
     };
-    localStorage.setItem('gameStateList', JSON.stringify(savedStateList));
+    localStorage.setItem('gameStates', JSON.stringify(savedStates));
   }
 
   loadSettings() {
@@ -413,7 +417,7 @@ export default class App extends React.Component {
     });
 
     const {gameState} = this.updateStateFromBoard(this.state.board);
-    this.saveBoardState();
+    this.saveBoardState(gameState);
     this.computeWinsAndLosses();
   }
 
@@ -513,7 +517,7 @@ export default class App extends React.Component {
             darkMode={this.state.darkMode}
             gameState={this.state.gameState}
             answer={this.state.answer}
-            day={this.state.day}
+            gameId={this.state.gameId}
             currentRow={this.state.currentRow}
             cellStatuses={this.state.cellStatuses}
             wins={this.state.wins}

@@ -44,4 +44,5 @@ export const state = {
   playing: 'playing',
   won: 'won',
   lost: 'lost',
+  disabled: 'disabled',
 }
