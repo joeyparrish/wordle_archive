@@ -20,7 +20,7 @@ export class ShareNewGameModal extends React.Component {
               <div className="pl-5 block sm:text-base text-sm mt-6 mb-5">
                 <div className="flex-1 w-full text-center">
                   <a
-                    className="text-center underline text-blue-600"
+                    className="text-center underline text-blue-600 dark:text-amber-300"
                     href={newGameUrl}
                     target="_blank"
                   >{newGameUrl}</a>
