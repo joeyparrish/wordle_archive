@@ -39,3 +39,9 @@ export const status = {
   gray: 'gray',
   unguessed: 'unguessed',
 }
+
+export const state = {
+  playing: 'playing',
+  won: 'won',
+  lost: 'lost',
+}

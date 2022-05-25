@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { letters, status } from './constants'
+import { letters, status, state } from './constants'
 import { Keyboard } from './components/Keyboard'
 import words from './data/words'
 
@@ -17,12 +17,6 @@ import { Menu } from '@headlessui/react'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
-}
-
-const state = {
-  playing: 'playing',
-  won: 'won',
-  lost: 'lost',
 }
 
 const getDayAnswer = (day_) => {
@@ -498,7 +492,22 @@ function App() {
     }
   }
 
-  const header_symbol = (tempGameStateList[day-1].state === 'won') ? ('✔') : ((tempGameStateList[day-1].state === 'lost') ? ('✘') : '')
+  const header_symbol = (tempGameStateList[day-1].state === state.won) ? ('✔') : ((tempGameStateList[day-1].state === state.lost) ? ('✘') : '')
+
+  function getOccurrence(array, value) {
+    let count = 0;
+    if (array) {
+      for (let i=0; i<array.length; i++) {
+        if (array[i].state === value) {
+          count++;
+        }
+      }
+    }
+    return count;
+  }
+ 
+  const wins = getOccurrence(gameStateList, 'won')
+  const losses = getOccurrence(gameStateList, 'lost')
 
   var elements = items_list.map(i => {
     return (
@@ -582,9 +591,6 @@ function App() {
             styles={modalStyles}
             darkMode={darkMode}
             gameState={gameState}
-            state={state}
-            currentStreak={currentStreak}
-            longestStreak={longestStreak}
             answer={answer}
             playAgain={() => {
               closeModal()
@@ -593,6 +599,8 @@ function App() {
             day={day}
             currentRow={currentRow}
             cellStatuses={cellStatuses}
+            wins={wins}
+            losses={losses}
           />
           <SettingsModal
             isOpen={settingsModalIsOpen}
