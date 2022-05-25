@@ -1,5 +1,6 @@
 import Modal from 'react-modal';
 import React from 'react';
+import { CloseButton } from './CloseButton';
 import { ShareButton } from './ShareButton';
 import { state, status } from '../constants';
 import Success from '../data/Success.png';
@@ -7,23 +8,6 @@ import Fail from '../data/Cross.png';
 import WIP from '../data/WIP3.png';
 
 Modal.setAppElement('#root');
-
-// TODO: factor out close button component common to all modals
-class CloseButton extends React.Component {
-  render() {
-    return (
-      <div className={this.props.darkMode ? 'dark' : ''}>
-        <button
-          type="button"
-          className="rounded px-6 py-2 mt-8 text-lg nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark"
-          onClick={this.props.handleClose}
-        >
-          Close
-        </button>
-      </div>
-    );
-  }
-}
 
 export class EndGameModal extends React.Component {
   getShareText() {
@@ -62,6 +46,7 @@ export class EndGameModal extends React.Component {
         contentLabel="Game End Modal"
       >
         <div className={this.props.darkMode ? 'dark' : ''}>
+          <CloseButton onClick={this.props.handleClose} />
           <div className="h-full flex flex-col items-center justify-center max-w-[300px] mx-auto text-primary dark:text-primary-dark">
             {this.props.gameState === state.won && (
               <>
@@ -112,10 +97,6 @@ export class EndGameModal extends React.Component {
                 />
               </>
             )}
-            <CloseButton
-              darkMode={this.props.darkMode}
-              handleClose={this.props.handleClose}
-            />
           </div>
         </div>
       </Modal>

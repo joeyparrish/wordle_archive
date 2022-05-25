@@ -1,4 +1,4 @@
-import { ReactComponent as Close } from '../data/Close.svg'
+import { CloseButton } from './CloseButton';
 import Modal from 'react-modal'
 import { Switch } from '@headlessui/react'
 import React from 'react';
@@ -45,18 +45,12 @@ export class SettingsModal extends React.Component {
         contentLabel="Settings Modal"
       >
         <div className={`h-full ${this.props.darkMode ? 'dark' : ''}`}>
+          <CloseButton onClick={this.props.handleClose} />
           <div
             className={`h-full flex flex-col items-center justify-center max-w-[390px] mx-auto pt-9 text-primary dark:text-primary-dark `}
           >
             <h1 className="text-center mb-4 sm:text-3xl text-2xl">Settings</h1>
             <div className="flex-1 w-full mb-4">
-              <button
-                className="absolute top-4 right-4 rounded-full nm-flat-background dark:nm-flat-background-dark text-primary dark:text-primary-dark p-1 w-6 h-6 sm:p-2 sm:h-8 sm:w-8"
-                onClick={this.props.handleClose}
-              >
-                <Close />
-              </button>
-
               <SettingToggle
                 on={this.props.darkMode}
                 toggle={this.props.toggleDarkMode}
