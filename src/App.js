@@ -330,7 +330,11 @@ export default class App extends React.Component {
     if (this.state.createMode) {
       // In creation mode, once you enter a valid word, you "win", and you get
       // to see the dialog to share your word to challenge your friends.
-      const newGameId = wordToCode(encrypt(word));
+
+      // Since the ID has a time-based element, don't update it once we compute
+      // one.  This way, you can close the share dialog, hit "enter", and get
+      // back to the same game ID in the share dialog.
+      const newGameId = this.state.newGameId || wordToCode(encrypt(word));
 
       this.setState({
         cellStatuses: [Array(5).fill(status.green)],
