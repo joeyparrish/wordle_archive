@@ -14,7 +14,7 @@ class CloseButton extends React.Component {
         <button
           type="button"
           className="rounded px-6 py-2 mt-8 text-lg nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark"
-          onClick={this.props.playAgain}
+          onClick={this.props.handleClose}
         >
           Close
         </button>
@@ -134,6 +134,7 @@ export class EndGameModal extends React.Component {
               </>
             )}
             <ShareButton
+              day={this.props.day}
               darkMode={this.props.darkMode}
               gameState={this.props.gameState}
               currentRow={this.props.currentRow}
@@ -141,7 +142,7 @@ export class EndGameModal extends React.Component {
             />
             <CloseButton
               darkMode={this.props.darkMode}
-              playAgain={this.props.playAgain}
+              handleClose={this.props.handleClose}
             />
           </div>
         </div>
