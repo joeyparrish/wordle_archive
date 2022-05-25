@@ -1,5 +1,6 @@
 import Modal from 'react-modal';
 import React from 'react';
+import { ShareButton } from './ShareButton';
 import { state, status } from '../constants';
 import Success from '../data/Success.png';
 import Fail from '../data/Cross.png';
@@ -7,6 +8,7 @@ import WIP from '../data/WIP3.png';
 
 Modal.setAppElement('#root');
 
+// TODO: factor out close button component common to all modals
 class CloseButton extends React.Component {
   render() {
     return (
@@ -23,15 +25,7 @@ class CloseButton extends React.Component {
   }
 }
 
-class ShareButton extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      pressed: false,
-    };
-  }
-
+export class EndGameModal extends React.Component {
   getShareText() {
     const won = this.props.gameState === state.won;
     const row = won ? this.props.currentRow : 'X';
@@ -59,28 +53,6 @@ class ShareButton extends React.Component {
     return header + '\n\n' + map;
   }
 
-  onClick() {
-    this.setState({
-      pressed: true,
-    });
-    navigator.clipboard.writeText(this.getShareText());
-    setTimeout(() => this.setState({pressed: false}), 3000);
-  }
-
-  render() {
-    return (
-      <button
-        type="button"
-        className="rounded px-6 py-2 mt-8 text-lg nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark"
-        onClick={() => this.onClick()}
-      >
-        {this.state.pressed ? 'Copied!' : 'Share'}
-      </button>
-    );
-  }
-}
-
-export class EndGameModal extends React.Component {
   render() {
     return (
       <Modal
@@ -134,11 +106,7 @@ export class EndGameModal extends React.Component {
               </>
             )}
             <ShareButton
-              gameId={this.props.gameId}
-              darkMode={this.props.darkMode}
-              gameState={this.props.gameState}
-              currentRow={this.props.currentRow}
-              cellStatuses={this.props.cellStatuses}
+              shareText={this.getShareText()}
             />
             <CloseButton
               darkMode={this.props.darkMode}
