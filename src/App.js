@@ -11,8 +11,9 @@ import { Board } from './components/Board'
 import { InfoModal } from './components/InfoModal'
 import { SettingsModal } from './components/SettingsModal'
 import { EndGameModal } from './components/EndGameModal'
+import { ShareNewGameModal } from './components/ShareNewGameModal'
 import { Keyboard } from './components/Keyboard'
-import { decrypt, codeToWord } from './cipher'
+import { decrypt, encrypt, codeToWord, wordToCode } from './cipher'
 
 function isValidWord(word) {
   return words[word.toLowerCase()];
@@ -45,18 +46,18 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
 
+    const gameId = computeGameId();
+    const answer = computeAnswer(gameId);
+    const createMode = answer === '';
+
     // Don't use Array(6).fill(Array(5).fill('')), because this will result in
     // each row being the same (===) object.  Overwriting a cell of one row
     // would overwrite the cell in the same column in all rows.
     const board = [];
-    for (let rowIdx = 0; rowIdx < 6; rowIdx++) {
+    // In create mode, we only display one row.
+    for (let rowIdx = 0; rowIdx < (createMode ? 1 : 6); rowIdx++) {
       board.push(Array(5).fill(''));
     }
-
-    const gameId = computeGameId();
-    const answer = computeAnswer(gameId);
-    const createModalOpen = answer === '';
-    const gameState = createModalOpen ? state.disabled : state.playing;
 
     this.state = {
       gameId,
@@ -68,7 +69,7 @@ export default class App extends React.Component {
       darkMode: false,
       colorBlindMode: false,
       firstTime: true,  // tied to info modal state
-      gameState,
+      gameState: state.playing,
 
       // Unsafe initial state is fine, will be replaced by updateStateFromBoard.
       cellStatuses: Array(6).fill(Array(5).fill(status.unguessed)),
@@ -81,7 +82,9 @@ export default class App extends React.Component {
       // Modal states:
       settingsModalOpen: false,
       endGameModalOpen: false,
-      createModalOpen,
+      createMode,
+      shareNewGameModalOpen: false,
+      newGameId: '',
     };
 
     this.savedBooleanSettings = [
@@ -150,7 +153,7 @@ export default class App extends React.Component {
       letterStatuses[letter] = status.unguessed;
     }
 
-    for (let rowIdx = 0; rowIdx < 6; rowIdx++) {
+    for (let rowIdx = 0; rowIdx < this.state.board.length; rowIdx++) {
       const rowStatus = [];
 
       for (let colIdx = 0; colIdx < 5; colIdx++) {
@@ -324,6 +327,21 @@ export default class App extends React.Component {
       return;
     }
 
+    if (this.state.createMode) {
+      // In creation mode, once you enter a valid word, you "win", and you get
+      // to see the dialog to share your word to challenge your friends.
+      const newGameId = wordToCode(encrypt(word));
+
+      this.setState({
+        cellStatuses: [Array(5).fill(status.green)],
+        gameState: state.won,
+        newGameId,
+        shareNewGameModalOpen: true,
+      });
+
+      return;
+    }
+
     this.setState({
       currentRow: this.state.currentRow + 1,
       currentCol: 0,
@@ -382,6 +400,10 @@ export default class App extends React.Component {
     };
   }
 
+  openCreateMode() {
+    window.open('?', '_blank');
+  }
+
   render() {
     const html = document.querySelector('html');
     if (this.state.darkMode) {
@@ -397,18 +419,23 @@ export default class App extends React.Component {
             <button className="mr-2" type="button" onClick={() => this.toggleState('settingsModalOpen')}>
               <Settings />
             </button>
-            <button type="button" onClick={() => this.toggleState('createModalOpen')}>
+            <button type="button" className={this.state.createMode ? 'invisible' : ''} onClick={() => this.openCreateMode()}>
               <Create />
             </button>
-            <h1 className="flex-1 text-center text-l xxs:text-lg sm:text-3xl tracking-wide font-bold font-og">
+            <h1 className="flex-1 text-center xxs:text-lg sm:text-3xl tracking-wide font-bold font-og">
               WORDLES WITH FRIENDS {this.getHeaderSymbol()}
             </h1>
-            <button className="mr-2" type="button" onClick={() => this.toggleState('endGameModalOpen')}>
+            <button className={this.state.createMode ? 'invisible' : 'mr-2'} type="button" onClick={() => this.toggleState('endGameModalOpen')}>
               <Share />
             </button>
             <button type="button" onClick={() => this.toggleState('firstTime')}>
               <Info />
             </button>
+          </header>
+          <header className="flex items-center py-2 px-3 text-primary dark:text-primary-dark">
+            <h2 className={this.state.createMode ? 'flex-1 text-center font-og font-bold' : 'invisible'}>
+              ENTER A WORD TO CHALLENGE YOUR FRIENDS
+            </h2>
           </header>
           <Board
             board={this.state.board}
@@ -444,6 +471,13 @@ export default class App extends React.Component {
             colorBlindMode={this.state.colorBlindMode}
             toggleDarkMode={() => this.toggleState('darkMode')}
             toggleColorBlindMode={() => this.toggleState('colorBlindMode')}
+            styles={this.getModalStyles()}
+          />
+          <ShareNewGameModal
+            isOpen={this.state.shareNewGameModalOpen}
+            handleClose={() => this.disableState('shareNewGameModalOpen')}
+            darkMode={this.state.darkMode}
+            newGameId={this.state.newGameId}
             styles={this.getModalStyles()}
           />
           <Keyboard
