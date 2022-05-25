@@ -64,6 +64,7 @@ class KeyboardRow extends React.Component {
         )}
         {this.props.row.map((letter) => (
           <KeyboardKey
+            key={letter}
             letter={letter}
             letterStatuses={this.props.letterStatuses}
             colorBlindMode={this.props.colorBlindMode}
@@ -89,6 +90,7 @@ export class Keyboard extends React.Component {
       <div className="w-full flex flex-col items-center mb-3 select-none">
         {keyboardLetters.map((row, idx) => (
           <KeyboardRow
+            key={idx}
             row={row}
             idx={idx}
             letterStatuses={this.props.letterStatuses}
