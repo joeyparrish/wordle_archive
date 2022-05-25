@@ -13,12 +13,6 @@ import { InfoModal } from './components/InfoModal'
 import { SettingsModal } from './components/SettingsModal'
 import { EndGameModal } from './components/EndGameModal'
 
-import { Menu } from '@headlessui/react'
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
-
 const getDayAnswer = (day_) => {
   return wordle_answers[day_-1].toUpperCase()
 }
@@ -69,43 +63,6 @@ const getIsSavedSolution = () => {
   return false;
 }
 
-const getIsClearedSolution = (day_) => {
-  const gameStateList = JSON.parse(localStorage.getItem('gameStateList'))
-
-  if (gameStateList) {
-    const dayState = gameStateList[day_-1]
-    return dayState?.state === state.won && dayState?.board === null
-  }
-
-  return false;
-}
-
-const calculateScore = (day_) => {
-  const gameStateList = JSON.parse(localStorage.getItem('gameStateList'))
-
-  if (gameStateList) {
-    const dayState = gameStateList[day_-1];
-    const board = dayState?.board;
-
-    // puzzle was solved before we tracked board state in
-    // local storage. we'll still show the solved puzzle
-    // (on first row) but don't show score since its unknown
-    if (dayState?.scoreUnknown) {
-      return '';
-    }
-
-    const numGuesses = board
-      ? board
-        .flatMap(row => row.join('') ? 1 : 0)
-        .reduce((acc, curr) => acc + curr, 0)
-      : null;
-
-    return numGuesses ? `${numGuesses}/6` : '';
-  }
-
-  return '';
-}
-
 const wordle_answers = ["rebut", "sissy", "humph", "awake", "blush", "focal", "evade", "naval", "serve", "heath", "dwarf", "model", "karma", "stink", "grade", "quiet", "bench", "abate", "feign", "major", "death", "fresh", "crust", "stool", "colon", "abase", "marry", "react", "batty", "pride", "floss", "helix", "croak", "staff", "paper", "unfed", "whelp", "trawl", "outdo", "adobe", "crazy", "sower", "repay", "digit", "crate", "cluck", "spike", "mimic", "pound", "maxim", "linen", "unmet", "flesh", "booby", "forth", "first", "stand", "belly", "ivory", "seedy", "print", "yearn", "drain", "bribe", "stout", "panel", "crass", "flume", "offal", "agree", "error", "swirl", "argue", "bleed", "delta", "flick", "totem", "wooer", "front", "shrub", "parry", "biome", "lapel", "start", "greet", "goner", "golem", "lusty", "loopy", "round", "audit", "lying", "gamma", "labor", "islet", "civic", "forge", "corny", "moult", "basic", "salad", "agate", "spicy", "spray", "essay", "fjord", "spend", "kebab", "guild", "aback", "motor", "alone", "hatch", "hyper", "thumb", "dowry", "ought", "belch", "dutch", "pilot", "tweed", "comet", "jaunt", "enema", "steed", "abyss", "growl", "fling", "dozen", "boozy", "erode", "world", "gouge", "click", "briar", "great", "altar", "pulpy", "blurt", "coast", "duchy", "groin", "fixer", "group", "rogue", "badly", "smart", "pithy", "gaudy", "chill", "heron", "vodka", "finer", "surer", "radio", "rouge", "perch", "retch", "wrote", "clock", "tilde", "store", "prove", "bring", "solve", "cheat", "grime", "exult", "usher", "epoch", "triad", "break", "rhino", "viral", "conic", "masse", "sonic", "vital", "trace", "using", "peach", "champ", "baton", "brake", "pluck", "craze", "gripe", "weary", "picky", "acute", "ferry", "aside", "tapir", "troll", "unify", "rebus", "boost", "truss", "siege", "tiger", "banal", "slump", "crank", "gorge", "query", "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy", "point", "robot", "prick", "wince", "crimp", "knoll", "sugar", "whack", "mount", "perky", "could", "wrung", "light", "those", "moist", "shard", "pleat", "aloft", "skill", "elder", "frame", "humor", "pause", "ulcer", "ultra", "robin", "cynic", "aroma", "caulk", "shake", "dodge", "swill", "tacit", "other", "thorn", "trove", "bloke", "vivid", "spill", "chant", "choke", "rupee", "nasty", "mourn", "ahead", "brine", "cloth", "hoard", "sweet", "month", "lapse", "watch", "today", "focus", "smelt", "tease", "cater", "movie", "saute", "allow", "renew", "their", "slosh", "purge", "chest", "depot", "epoxy", "nymph", "found", "shall", "stove", "lowly", "snout", "trope", "fewer", "shawl", "natal", "comma", "foray", "scare", "stair", "black", "squad", "royal", "chunk", "mince", "shame", "cheek", "ample", "flair", "foyer", "cargo", "oxide", "plant", "olive", "inert", "askew", "heist", "shown", "zesty", "trash", "larva", "forgo", "story", "hairy", "train", "homer", "badge", "midst", "canny", "fetus", "butch", "farce", "slung", "tipsy", "metal", "yield", "delve", "being", "scour", "glass", "gamer", "scrap", "money", "hinge", "album", "vouch", "asset", "tiara", "crept", "bayou", "atoll", "manor", "creak", "showy", "phase", "froth", "depth", "gloom", "flood", "trait", "girth", "piety", "goose", "float", "donor", "atone", "primo", "apron", "blown", "cacao", "loser", "input", "gloat", "awful", "brink", "smite", "beady", "rusty", "retro", "droll", "gawky", "hutch", "pinto", "egret", "lilac", "sever", "field", "fluff", "flack", "agape", "voice", "stead", "stalk", "berth", "madam", "night", "bland", "liver", "wedge", "augur", "roomy", "wacky", "flock", "angry", "trite", "aphid", "tryst", "midge", "power", "elope", "cinch", "motto", "stomp", "upset", "bluff", "cramp", "quart", "coyly", "youth", "rhyme", "buggy", "alien", "smear", "unfit", "patty", "cling", "glean", "label", "hunky", "khaki", "poker", "gruel", "twice", "twang", "shrug", "treat", "waste", "merit", "woven", "needy", "clown", "widow", "irony", "ruder", "gauze", "chief", "onset", "prize", "fungi", "charm", "gully", "inter", "whoop", "taunt", "leery", "class", "theme", "lofty", "tibia", "booze", "alpha", "thyme", "doubt", "parer", "chute", "stick", "trice", "alike", "recap", "saint", "glory", "grate", "admit", "brisk", "soggy", "usurp", "scald", "scorn", "leave", "twine", "sting", "bough", "marsh", "sloth", "dandy", "vigor", "howdy", "enjoy"]
 
 let day;
@@ -117,9 +74,6 @@ for (let i=1;i<=og_day;i++) {
 }
 
 function App() {
-
-  const reloadCount = Number(sessionStorage.getItem('reloadCount')) || 0;
-
   const initialStates = {
     answer: () => getDayAnswer(day),
     gameState: state.playing,
@@ -151,9 +105,6 @@ function App() {
   const [currentCol, setCurrentCol] = useState(initialStates.currentCol)
   const [letterStatuses, setLetterStatuses] = useState(initialStates.letterStatuses)
   const [submittedInvalidWord, setSubmittedInvalidWord] = useState(false)
-  const [currentStreak, setCurrentStreak] = useLocalStorage('current-streak', 0)
-  const [longestStreak, setLongestStreak] = useLocalStorage('longest-streak', 0)
-  const streakUpdated = useRef(false)
   const [modalIsOpen, setIsOpen] = useState(false)
   const [firstTime, setFirstTime] = useLocalStorage('first-time', true)
   const [infoModalIsOpen, setInfoModalIsOpen] = useState(firstTime)
@@ -193,21 +144,6 @@ function App() {
   }, [gameState, isSavedSolution])
 
   useEffect(() => {
-    if (!streakUpdated.current) {
-      if (gameState === state.won) {
-        if (currentStreak >= longestStreak) {
-          setLongestStreak((prev) => prev + 1)
-        }
-        setCurrentStreak((prev) => prev + 1)
-        streakUpdated.current = true
-      } else if (gameState === state.lost) {
-        setCurrentStreak(0)
-        streakUpdated.current = true
-      }
-    }
-  }, [gameState, currentStreak, longestStreak, setLongestStreak, setCurrentStreak])
-
-  useEffect(() => {
     const jsonGameStateList = localStorage.getItem('gameStateList');
     if (jsonGameStateList == null) {
       setGameStateList(gameStateList)
@@ -216,15 +152,6 @@ function App() {
     // set to a blank board or the board from a past win
     setInitialGameState();
   }, [])
-
-  useEffect(() => {
-    if (reloadCount < 1) {
-      window.location.reload(true);
-      sessionStorage.setItem('reloadCount', String(reloadCount + 1));
-    } else {
-      sessionStorage.removeItem('reloadCount');
-    }
-  }, [og_day])
 
   // update letter and cell statuses each time we move onto a
   // new row and when we switch to a puzzle with a saved solution
@@ -509,30 +436,6 @@ function App() {
   const wins = getOccurrence(gameStateList, 'won')
   const losses = getOccurrence(gameStateList, 'lost')
 
-  var elements = items_list.map(i => {
-    return (
-      <Menu.Item key={i}>
-        {({ active }) =>
-          (
-            <button onClick={() => playDay(i)} className={classNames(
-              tempGameStateList[i-1].state,
-              getIsClearedSolution(i) ? "cleared" : "",
-              active ? 'font-bold text-gray-900' : 'text-gray-700',
-              'flex justify-between block px-4 py-2 text-sm w-full',
-            )}>
-                <span>
-                  {i+(tempGameStateList[i-1].state === state.won ? ' ✔' : tempGameStateList[i-1].state === state.lost ? ' ✘' : '')}
-                </span>
-                <span>
-                  {calculateScore(i)}
-                </span>
-            </button>
-          )
-        }
-      </Menu.Item>
-    );
-  });
-
   const html = document.querySelector('html');
   if (darkMode) {
     html.setAttribute('class', 'dark-bg');
@@ -592,10 +495,7 @@ function App() {
             darkMode={darkMode}
             gameState={gameState}
             answer={answer}
-            playAgain={() => {
-              closeModal()
-              streakUpdated.current = false
-            }}
+            playAgain={closeModal}
             day={day}
             currentRow={currentRow}
             cellStatuses={cellStatuses}
@@ -613,7 +513,6 @@ function App() {
           />
           <Keyboard
             isSolved={gameState === state.won}
-            onClear={clearSolution}
             letterStatuses={letterStatuses}
             addLetter={addLetter}
             onEnterPress={onEnterPress}
