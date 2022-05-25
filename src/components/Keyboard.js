@@ -1,6 +1,6 @@
 import { keyboardLetters, status, letters } from '../constants'
 import React from 'react';
-import DeleteKey from '../data/DeleteKey.svg';
+import { ReactComponent as DeleteKey } from '../data/DeleteKey.svg';
 
 class KeyboardKey extends React.Component {
   getKeyStyle() {
@@ -75,7 +75,7 @@ class KeyboardRow extends React.Component {
             onClick={this.props.onDeletePress}
             className="h-10 xxs:h-14 w-12 flex items-center justify-center nm-flat-background-sm dark:nm-flat-background-dark-sm text-primary dark:text-primary-dark mx-[3.5px] text-sm  rounded"
           >
-            <img src={DeleteKey} className="h-6 w-6" />
+            <DeleteKey className="h-6 w-6" />
           </button>
         )}
       </div>
