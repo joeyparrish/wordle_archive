@@ -105,9 +105,13 @@ export class EndGameModal extends React.Component {
                 </div>
               </>
             )}
-            <ShareButton
-              shareText={this.getShareText()}
-            />
+            {this.props.gameState !== state.playing && (
+              <>
+                <ShareButton
+                  shareText={this.getShareText()}
+                />
+              </>
+            )}
             <CloseButton
               darkMode={this.props.darkMode}
               handleClose={this.props.handleClose}
