@@ -7,10 +7,10 @@ The `Dockerfile` does a multistage build:
 
 ## Build Container
 
-Run: `docker build --no-cache -t wordlearchive:test .`
+Run: `docker build --no-cache -t wordles-with-friends:test .`
 
 ## Run Container
 
-Run: `docker run -it --rm -p 8080:8080 wordlearchive:test`
+Run: `docker run -it --rm -p 8080:8080 wordles-with-friends:test`
 
-In web browser go to <http://localhost:8080/wordle_archive> to see the app
+In web browser go to <http://localhost:8080/wordles-with-friends> to see the app
