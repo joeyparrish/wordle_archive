@@ -337,6 +337,7 @@ export default class App extends React.Component {
       const newGameId = this.state.newGameId || wordToCode(encrypt(word));
 
       this.setState({
+        currentRow: 2,  // So cellStatuses will affect the first row
         cellStatuses: [Array(5).fill(status.green)],
         gameState: state.won,
         newGameId,
