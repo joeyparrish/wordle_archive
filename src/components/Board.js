@@ -3,6 +3,25 @@ import { status } from '../constants';
 
 export class Board extends React.Component {
   getCellStyles(rowIdx, colIdx, letter) {
+    if (rowIdx === this.props.currentRow) {
+      if (letter) {
+        return [
+          'nm-inset-background',
+          'dark:nm-inset-background-dark',
+          'text-primary',
+          'dark:text-primary-dark',
+          this.props.submittedInvalidWord ? 'border border-red-800' : '',
+        ].join(' ');
+      } else {
+        return [
+          'nm-flat-background',
+          'dark:nm-flat-background-dark',
+          'text-primary',
+          'dark:text-primary-dark',
+        ].join(' ');
+      }
+    }
+
     switch (this.props.cellStatuses[rowIdx][colIdx]) {
       case status.green:
         if (this.props.colorBlindMode) {
