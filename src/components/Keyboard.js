@@ -27,16 +27,10 @@ class KeyboardKey extends React.Component {
     }
   }
 
-  onLetterPress(letter) {
-    this.handleKeyDown(new KeyboardEvent('keydown', {
-      key: letter,
-    }));
-  }
-
   render() {
     return (
       <button
-        onClick={() => this.props.onClick(this.props.letter)}
+        onClick={() => this.props.onLetterPress(this.props.letter)}
         key={this.props.letter}
         className="h-10 xxs:h-14 w-[2rem] sm:w-10 mx-[3.5px] text-sm font-medium rounded-[4px] nm-flat-background-sm dark:nm-flat-background-dark-sm"
       >
@@ -68,7 +62,7 @@ class KeyboardRow extends React.Component {
             letter={letter}
             letterStatuses={this.props.letterStatuses}
             colorBlindMode={this.props.colorBlindMode}
-            onClick={this.props.onLetterPress}
+            onLetterPress={this.props.onLetterPress}
           />
         ))}
         {this.props.idx === 2 && (
@@ -112,6 +106,12 @@ export class Keyboard extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDownBound);
     this.handleKeyDownBound = null;
+  }
+
+  onLetterPress(letter) {
+    this.handleKeyDown(new KeyboardEvent('keydown', {
+      key: letter,
+    }));
   }
 
   handleKeyDown(event) {
