@@ -14,8 +14,11 @@ export class EndGameModal extends React.Component {
     const won = this.props.gameState === state.won;
     const row = won ? this.props.currentRow : 'X';
     const header = `Wordles with Friends ${this.props.gameId} ${row}/6`;
+    return header + '\n\n' + this.getBoardMapAsText();
+  }
 
-    const map = this.props.cellStatuses.map((row) => {
+  getBoardMapAsText() {
+    return this.props.cellStatuses.map((row) => {
       if (row.every((item) => item !== status.unguessed)) {
         return row.map((state) => {
           switch (state) {
@@ -33,8 +36,6 @@ export class EndGameModal extends React.Component {
         return '';
       }
     }).join('');
-
-    return header + '\n\n' + map;
   }
 
   render() {
@@ -50,8 +51,10 @@ export class EndGameModal extends React.Component {
           <div className="h-full flex flex-col items-center justify-center max-w-[300px] mx-auto text-primary dark:text-primary-dark">
             {this.props.gameState === state.won && (
               <>
-                <img src={Success} alt="success" height="auto" width="auto" />
-                <h1 className=" text-3xl">Congrats!</h1>
+                <img src={Success} alt="success" className="h-48" />
+                <h1 className="text-3xl">Congrats!</h1>
+                <div className="mt-3">{this.props.gameId}</div>
+                <pre className="mt-3">{this.getBoardMapAsText()}</pre>
                 <p className="mt-3 text-2xl">
                   Won: {this.props.wins}
                 </p>
@@ -62,7 +65,7 @@ export class EndGameModal extends React.Component {
             )}
             {this.props.gameState === state.lost && (
               <>
-                <img src={Fail} alt="success" height="auto" width="80%" />
+                <img src={Fail} alt="success" className="h-48" />
                 <div className="text-primary dark:text-primary-dark text-4xl text-center">
                   <p>Oops!</p>
                   <p className="mt-3 text-2xl">
