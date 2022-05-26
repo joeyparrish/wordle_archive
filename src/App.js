@@ -428,7 +428,7 @@ export default class App extends React.Component {
               <Create />
             </button>
             <h1 className="flex-1 text-center xxs:text-lg sm:text-3xl tracking-wide font-bold font-og">
-              WORDLES WITH FRIENDS {this.getHeaderSymbol()}
+              WORDLES WITH FRIENDS
             </h1>
             <button className={this.state.createMode ? 'invisible' : 'mr-2'} type="button" onClick={() => this.toggleState('endGameModalOpen')}>
               <Share />
@@ -442,7 +442,7 @@ export default class App extends React.Component {
               {
                 this.state.createMode ?
                     "ENTER A WORD TO CHALLENGE YOUR FRIENDS" :
-                    this.state.gameId
+                    this.state.gameId + " " + this.getHeaderSymbol()
               }
             </h2>
           </header>
