@@ -318,16 +318,14 @@ export default class App extends React.Component {
   }
 
   onEnterPress() {
-    const word = this.state.board[this.state.currentRow].join('');
-    if (this.state.currentRow === 6) {
-      return;
-    }
-    if (!isValidWord(word)) {
-      this.setState({submittedInvalidWord: true});
-      return;
-    }
-
     if (this.state.createMode) {
+      const word = this.state.board[0].join('');
+
+      if (!isValidWord(word)) {
+        this.setState({submittedInvalidWord: true});
+        return;
+      }
+
       // In creation mode, once you enter a valid word, you "win", and you get
       // to see the dialog to share your word to challenge your friends.
 
@@ -339,11 +337,20 @@ export default class App extends React.Component {
       this.setState({
         currentRow: 2,  // So cellStatuses will affect the first row
         cellStatuses: [Array(5).fill(status.green)],
-        gameState: state.won,
         newGameId,
         shareNewGameModalOpen: true,
       });
 
+      return;
+    }
+
+    if (this.state.currentRow === 6) {
+      return;
+    }
+
+    const word = this.state.board[this.state.currentRow].join('');
+    if (!isValidWord(word)) {
+      this.setState({submittedInvalidWord: true});
       return;
     }
 
