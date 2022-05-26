@@ -38,7 +38,7 @@ export class ShareButton extends React.Component {
     return (
       <TextButton
         onClick={() => this.onClick()}
-        label={this.state.pressed ? 'Copied!' : (this.props.text || 'Share')}
+        label={this.state.pressed ? 'Copied!' : (this.props.label || 'Share')}
       />
     );
   }
