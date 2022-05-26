@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/wordles-with-friends/static/css/main.142bb5f3.css",
-    "main.js": "/wordles-with-friends/static/js/main.783a9b92.js",
+    "main.css": "/wordles-with-friends/static/css/main.47fd4f92.css",
+    "main.js": "/wordles-with-friends/static/js/main.900571ca.js",
     "static/media/Cross.png": "/wordles-with-friends/static/media/Cross.cbf77228e847522eff11.png",
     "static/media/Success.png": "/wordles-with-friends/static/media/Success.df533be8f86a57bc5946.png",
     "static/media/Ranade-Variable.ttf": "/wordles-with-friends/static/media/Ranade-Variable.bb177f94a709e8e8f396.ttf",
@@ -14,11 +14,11 @@
     "static/media/Info.svg": "/wordles-with-friends/static/media/Info.ee717ac430bb01bfbbd42aa3dbffe913.svg",
     "static/media/Close.svg": "/wordles-with-friends/static/media/Close.f34771d5d250820d8c5ec83c816bf8f5.svg",
     "static/media/Create.svg": "/wordles-with-friends/static/media/Create.3de24c10288e71def85e09d1d6370dbc.svg",
-    "main.142bb5f3.css.map": "/wordles-with-friends/static/css/main.142bb5f3.css.map",
-    "main.783a9b92.js.map": "/wordles-with-friends/static/js/main.783a9b92.js.map"
+    "main.47fd4f92.css.map": "/wordles-with-friends/static/css/main.47fd4f92.css.map",
+    "main.900571ca.js.map": "/wordles-with-friends/static/js/main.900571ca.js.map"
   },
   "entrypoints": [
-    "static/css/main.142bb5f3.css",
-    "static/js/main.783a9b92.js"
+    "static/css/main.47fd4f92.css",
+    "static/js/main.900571ca.js"
   ]
 }
