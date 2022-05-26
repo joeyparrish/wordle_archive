@@ -437,8 +437,12 @@ export default class App extends React.Component {
             </button>
           </header>
           <header className="flex items-center py-2 px-3 text-primary dark:text-primary-dark">
-            <h2 className={this.state.createMode ? 'flex-1 text-center font-og font-bold' : 'invisible'}>
-              ENTER A WORD TO CHALLENGE YOUR FRIENDS
+            <h2 className="flex-1 text-center font-og font-bold">
+              {
+                this.state.createMode ?
+                    "ENTER A WORD TO CHALLENGE YOUR FRIENDS" :
+                    this.state.gameId
+              }
             </h2>
           </header>
           <Board
