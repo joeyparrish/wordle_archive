@@ -27,7 +27,9 @@ export class ShareNewGameModal extends React.Component {
                 </div>
                 <div className="flex-1 w-full text-center">
                   <ShareButton
-                    shareText={newGameUrl}
+                    label="Share Link"
+                    shareText="I challenge you to a Wordle!"
+                    shareUrl={newGameUrl}
                   />
                 </div>
               </div>

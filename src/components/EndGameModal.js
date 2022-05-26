@@ -2,6 +2,7 @@ import Modal from 'react-modal';
 import React from 'react';
 import { CloseButton } from './CloseButton';
 import { ShareButton } from './ShareButton';
+import { TextButton } from './TextButton';
 import { state, status } from '../constants';
 import Success from '../data/Success.png';
 import Fail from '../data/Cross.png';
@@ -13,7 +14,7 @@ export class EndGameModal extends React.Component {
   getShareText() {
     const won = this.props.gameState === state.won;
     const row = won ? this.props.currentRow : 'X';
-    const header = `Wordles with Friends ${this.props.gameId} ${row}/6`;
+    const header = `Wordles with Friends\n${this.props.gameId} ${row}/6`;
     return header + '\n\n' + this.getBoardMapAsText();
   }
 
@@ -96,7 +97,12 @@ export class EndGameModal extends React.Component {
             {this.props.gameState !== state.playing && (
               <>
                 <ShareButton
+                  label="Share Results"
                   shareText={this.getShareText()}
+                />
+                <TextButton
+                  label="Create Your Own"
+                  onClick={() => window.open('?', '_blank')}
                 />
               </>
             )}

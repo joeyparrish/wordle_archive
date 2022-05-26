@@ -1,4 +1,5 @@
 import React from 'react';
+import { TextButton } from './TextButton';
 
 export class ShareButton extends React.Component {
   constructor(props) {
@@ -13,19 +14,32 @@ export class ShareButton extends React.Component {
     this.setState({
       pressed: true,
     });
-    navigator.clipboard.writeText(this.props.shareText);
+
+    const combinedText = [
+      this.props.shareText,
+      this.props.shareUrl,
+    ].filter(Boolean).join('\n\n');
+
+    navigator.clipboard.writeText(combinedText);
     setTimeout(() => this.setState({pressed: false}), 3000);
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'Wordles with Friends',
+        text: this.props.shareText ? this.props.shareText + '\n\n' : '',
+        url: this.props.shareUrl,
+      }).catch((error) => {
+        console.error('Failed to share:', error);
+      });
+    }
   }
 
   render() {
     return (
-      <button
-        type="button"
-        className="rounded px-6 py-2 mt-8 text-lg nm-flat-background dark:nm-flat-background-dark hover:nm-inset-background dark:hover:nm-inset-background-dark text-primary dark:text-primary-dark"
+      <TextButton
         onClick={() => this.onClick()}
-      >
-        {this.state.pressed ? 'Copied!' : 'Share'}
-      </button>
+        label={this.state.pressed ? 'Copied!' : (this.props.text || 'Share')}
+      />
     );
   }
 }
