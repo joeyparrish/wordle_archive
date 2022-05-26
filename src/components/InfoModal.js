@@ -67,21 +67,19 @@ export class InfoModal extends React.Component {
                   which was built on <a className="underline text-blue-600 dark:text-amber-300" href="https://twitter.com/katherinecodes">Katherine Peterson</a>'s <a className="underline text-blue-600 dark:text-amber-300" href="https://octokatherine.github.io/word-master">WordMaster</a>.
                 </li>
                 <li className="mt-6 mb-2">
-                  Made with love by <a className="underline text-blue-600 dark:text-amber-300" href="https:///github.com/joeyparrish">Joey Parrish</a>.
+                  Made with love by <a className="underline text-blue-600 dark:text-amber-300" href="https:///github.com/joeyparrish">Joey Parrish</a>,
+                  and open sourced on
+                  <a
+                    href="https://github.com/joeyparrish/wordles-with-friends"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Github
+                      className="inline ml-[6px] rounded-full h-5 w-5 sm:h-6 sm:w-6"
+                    />
+                  </a>
                 </li>
               </ul>
-
-              <div className="flex justify-center sm:text-base text-sm">
-                <span>This project is open source on</span>
-                <a
-                  className="ml-[6px] rounded-full h-5 w-5 sm:h-6 sm:w-6"
-                  href="https://github.com/joeyparrish/wordles-with-friends"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <Github />
-                </a>
-              </div>
             </div>
           </div>
         </div>
