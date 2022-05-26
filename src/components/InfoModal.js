@@ -39,21 +39,21 @@ export class InfoModal extends React.Component {
               </ul>
 
               <div className="mb-3 mt-8 flex items-center">
-                <span className={`${this.props.colorBlindMode ? 'nm-inset-orange-500' : 'nm-inset-n-green'} text-gray-50 inline-flex items-center justify-center text-3x w-10 h-10 rounded-full`}>
+                <span className={`${this.props.colorBlindMode ? 'nm-inset-orange-500' : 'nm-inset-n-green'} text-gray-50 inline-flex items-center justify-center text-3x w-10 h-10`}>
                   W
                 </span>
                 <span className="mx-2">=</span>
                 <span>Correct letter, correct spot</span>
               </div>
               <div className="mb-3">
-                <span className={`${this.props.colorBlindMode ? 'nm-inset-blue-300' : 'nm-inset-yellow-500'} text-gray-50 inline-flex items-center justify-center text-3x w-10 h-10 rounded-full`}>
+                <span className={`${this.props.colorBlindMode ? 'nm-inset-blue-300' : 'nm-inset-yellow-500'} text-gray-50 inline-flex items-center justify-center text-3x w-10 h-10`}>
                   W
                 </span>
                 <span className="mx-2">=</span>
                 <span>Correct letter, wrong spot</span>
               </div>
               <div className="mb-3">
-                <span className="nm-inset-n-gray text-gray-50 inline-flex items-center justify-center text-3x w-10 h-10 rounded-full">
+                <span className="nm-inset-n-gray text-gray-50 inline-flex items-center justify-center text-3x w-10 h-10">
                   W
                 </span>
                 <span className="mx-2">=</span>
