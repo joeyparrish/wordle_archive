@@ -178,8 +178,7 @@ export default class App extends React.Component {
         // Because of this, we mark them in multiple passes, and use info about
         // which letters from your guess have been matched.
 
-        // Track how many times each letter appears in the guess.
-        const guess = board[rowIdx];
+        // Track how many times each letter appears in the answer.
         const unmatchedLetters = {};
         for (const letter of this.state.answer) {
           if (letter in unmatchedLetters) {
@@ -204,7 +203,7 @@ export default class App extends React.Component {
         // Now you can mark the yellow ones.
         for (let colIdx = 0; colIdx < 5; colIdx++) {
           const letter = board[rowIdx][colIdx];
-          if (rowStatus[colIdx] == status.gray &&
+          if (rowStatus[colIdx] === status.gray &&
               this.state.answer.includes(letter) &&
               unmatchedLetters[letter]) {
             rowStatus[colIdx] = status.yellow;
