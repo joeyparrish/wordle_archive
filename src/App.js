@@ -113,7 +113,7 @@ export default class App extends React.Component {
       }
     };
 
-    const gameState = combinedState.gameState;
+    const {currentRow, gameState} = combinedState;
     const cellStatuses = combinedState.cellStatuses
         .map(r => r.map(c => fromColor(c)).join('')).join('\n');
     const letterStatuses = letters
@@ -125,6 +125,7 @@ export default class App extends React.Component {
       cellStatuses,
       letterStatuses,
       board,
+      currentRow,
     };
   }
 
@@ -154,30 +155,66 @@ export default class App extends React.Component {
     }
 
     for (let rowIdx = 0; rowIdx < this.state.board.length; rowIdx++) {
-      const rowStatus = [];
-
-      for (let colIdx = 0; colIdx < 5; colIdx++) {
-        const letter = board[rowIdx][colIdx];
-
-        if (letter !== '') {
-          lastRow = rowIdx;
-
-          if (letter === this.state.answer[colIdx]) {
-            rowStatus.push(status.green);
-          } else if (this.state.answer.includes(letter)) {
-            rowStatus.push(status.yellow);
-          } else {
-            rowStatus.push(status.gray);
-          }
-        }
-      }
-
-      // Cell/letter status is not revealed unless the row is complete.
-      if (rowStatus.length !== 5) {
+      const numLetters = board[rowIdx].filter(Boolean).length;
+      if (numLetters !== 5) {
+        // Cell/letter status is not revealed unless the row is complete.
         cellStatuses.push(Array(5).fill(status.unguessed));
       } else {
+        lastRow = rowIdx;
+
+        // Okay, so, it turns out that this shit is complicated.
+        //
+        // If the answer is:
+        //   PARES
+        // but you guess:
+        //   PRESS
+        // the colors should be:
+        //   YYY_G
+        //
+        // Although the first S is in the word, it should be gray, not yellow.
+        // Since there's only one S, and there's a green S in the right place,
+        // the other S should _NOT_ be yellow.
+        //
+        // Because of this, we mark them in multiple passes, and use info about
+        // which letters from your guess have been matched.
+
+        // Track how many times each letter appears in the guess.
+        const guess = board[rowIdx];
+        const unmatchedLetters = {};
+        for (const letter of this.state.answer) {
+          if (letter in unmatchedLetters) {
+            unmatchedLetters[letter] += 1;
+          } else {
+            unmatchedLetters[letter] = 1;
+          }
+        }
+
+        // Start with everything gray.
+        const rowStatus = Array(5).fill(status.gray);
+
+        // Mark the green ones first, and count down in unmatchedLetters.
+        for (let colIdx = 0; colIdx < 5; colIdx++) {
+          const letter = board[rowIdx][colIdx];
+          if (letter === this.state.answer[colIdx]) {
+            rowStatus[colIdx] = status.green;
+            unmatchedLetters[letter] -= 1;
+          }
+        }
+
+        // Now you can mark the yellow ones.
+        for (let colIdx = 0; colIdx < 5; colIdx++) {
+          const letter = board[rowIdx][colIdx];
+          if (rowStatus[colIdx] == status.gray &&
+              this.state.answer.includes(letter) &&
+              unmatchedLetters[letter]) {
+            rowStatus[colIdx] = status.yellow;
+          }
+        }
+
+        // Push the row status.
         cellStatuses.push(rowStatus);
 
+        // Update letter statuses on the keyboard.
         for (let colIdx = 0; colIdx < 5; colIdx++) {
           const letter = board[rowIdx][colIdx];
           if (letterStatuses[letter] !== status.green) {
@@ -185,6 +222,7 @@ export default class App extends React.Component {
           }
         }
 
+        // Update game status if applicable.
         if (rowStatus.every((cell) => cell === status.green)) {
           gameState = state.won;
         } else if (lastRow === 5) {
